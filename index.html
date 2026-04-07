@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Optimization - Revolutionizing Computing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        /* Animated Background */
+        .quantum-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 40%, rgba(99, 102, 241, 0.2) 0%, transparent 50%),
+                #0a0a0a;
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 20s infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-strong {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-text-cyan {
+            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Card Hover Effects */
+        .hover-lift {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            z-index: 1000;
+            transition: width 0.3s;
+        }
+        
+        /* Navigation Dots */
+        .nav-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .nav-dot.active {
+            background: #667eea;
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.3);
+        }
+        
+        /* Qubit Animation */
+        .qubit-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+        
+        .qubit {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #667eea, #764ba2, #f093fb, #667eea);
+            animation: rotate 4s linear infinite;
+            opacity: 0.8;
+        }
+        
+        .qubit-inner {
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            background: #0a0a0a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Timeline */
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            transform: translateX(-50%);
+        }
+        
+        /* Table Styling */
+        .quantum-table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .quantum-table th {
+            background: rgba(99, 102, 241, 0.2);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid rgba(99, 102, 241, 0.5);
+        }
+        
+        .quantum-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .quantum-table tr:hover td {
+            background: rgba(99, 102, 241, 0.1);
+        }
+        
+        /* Glowing Button */
+        .glow-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glow-btn::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #667eea);
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .glow-btn:hover::before {
+            opacity: 1;
+        }
+        
+        /* Section Transitions */
+        section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            position: relative;
+        }
+        
+        /* Comparison Cards */
+        .comparison-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .comparison-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .comparison-card:hover::after {
+            left: 100%;
+        }
+        
+        /* Algorithm Cards */
+        .algo-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        
+        /* Chart Bars */
+        .chart-bar {
+            transition: height 1s ease-out;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-dots { display: none; }
+            section { padding: 2rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <!-- Background -->
+    <div class="quantum-bg"></div>
+    <div class="particles" id="particles"></div>
+    
+    <!-- Navigation -->
+    <div class="nav-dots" id="navDots"></div>
+
+    <!-- Section 1: Hero -->
+    <section id="sec1" class="relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8" data-animate="fade-right">
+                    <div class="inline-block px-4 py-2 rounded-full glass text-sm font-medium text-purple-300 mb-4">
+                        Quantum Computing Seminar 2026
+                    </div>
+                    <h1 class="font-display text-6xl lg:text-8xl font-bold leading-tight">
+                        <span class="gradient-text">Quantum</span><br>
+                        <span class="text-white">Optimization</span>
+                    </h1>
+                    <p class="text-xl text-gray-400 max-w-lg leading-relaxed">
+                        Revolutionizing optimization speed through quantum superposition, entanglement, and tunneling effects.
+                    </p>
+                    <div class="flex gap-4 flex-wrap">
+                        <div class="glass px-6 py-3 rounded-full">
+                            <span class="text-purple-300 text-sm">Course:</span>
+                            <span class="ml-2 font-medium">Optimization Techniques</span>
+                        </div>
+                        <div class="glass px-6 py-3 rounded-full">
+                            <span class="text-purple-300 text-sm">Date:</span>
+                            <span class="ml-2 font-medium">April 8, 2026</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center" data-animate="fade-left">
+                    <div class="qubit-container">
+                        <div class="qubit"></div>
+                        <div class="qubit-inner">
+                            <span class="gradient-text font-display font-bold">Q</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Motivation -->
+    <section id="sec2" class="relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-animate="fade-up">
+                <span class="text-purple-400 font-medium tracking-wider uppercase text-sm">01. Motivation</span>
+                <h2 class="font-display text-4xl lg:text-6xl font-bold mt-4 mb-6">Why Classical Computing<br><span class="gradient-text-cyan">Reaches Its Limits</span></h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="glass rounded-2xl p-8 hover-lift" data-animate="fade-up" data-delay="0.1">
+                    <div class="w-16 h-16 rounded-full bg-red-500/20 flex items-center justify-center mb-6">
+                        <span class="text-3xl">🐌</span>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-4 text-red-300">NP-Hard Problems</h3>
+                    <p class="text-gray-400">No polynomial-time algorithm exists. Complexity grows exponentially with problem size.</p>
+                </div>
+                <div class="glass rounded-2xl p-8 hover-lift" data-animate="fade-up" data-delay="0.2">
+                    <div class="w-16 h-16 rounded-full bg-orange-500/20 flex items-center justify-center mb-6">
+                        <span class="text-3xl">💥</span>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-4 text-orange-300">Combinatorial Explosion</h3>
+                    <p class="text-gray-400">2<sup>n</sup> possibilities for n binary variables. 100 variables = 1.27 × 10³⁰ combinations.</p>
+                </div>
+                <div class="glass rounded-2xl p-8 hover-lift" data-animate="fade-up" data-delay="0.3">
+                    <div class="w-16 h-16 rounded-full bg-yellow-500/20 flex items-center justify-center mb-6">
+                        <span class="text-3xl">🕳️</span>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-4 text-yellow-300">Local Minima Traps</h3>
+                    <p class="text-gray-400">Gradient methods get stuck in suboptimal solutions, missing the global optimum.</p>
+                </div>
+            </div>
+
+            <div class="glass-strong rounded-3xl p-8 lg:p-12" data-animate="scale-up">
+                <h3 class="font-display text-2xl font-bold mb-8 text-center">Real-World Challenges</h3>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">🚚</div>
+                        <h4 class="font-bold text-lg mb-2 text-cyan-300">Logistics</h4>
+                        <p class="text-sm text-gray-400">Vehicle routing with 100+ stops faces 10²⁰⁰+ possibilities</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">💰</div>
+                        <h4 class="font-bold text-lg mb-2 text-cyan-300">Finance</h4>
+                        <p class="text-sm text-gray-400">Portfolio optimization across thousands of assets</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-5xl mb-4">🧠</div>
+                        <h4 class="font-bold text-lg mb-2 text-cyan-300">Machine Learning</h4>
+                        <p class="text-sm text-gray-400">Hyperparameter tuning taking weeks of computation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Classical Overview -->
+    <section id="sec3" class="relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-animate="fade-up">
+                <span class="text-purple-400 font-medium tracking-wider uppercase text-sm">02. Classical Methods</span>
+                <h2 class="font-display text-4xl lg:text-6xl font-bold mt-4 mb-6">Techniques &<br><span class="gradient-text">Limitations</span></h2>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 mb-16">
+                <div class="comparison-card glass rounded-2xl p-8 border-l-4 border-green-500" data-animate="fade-right">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="font-display text-2xl font-bold text-green-300">Linear Programming</h3>
+                        <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-xs">Polynomial</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Optimize linear objective with linear constraints</p>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Best for:</span>
+                            <span class="text-gray-300">Resource allocation</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Limitation:</span>
+                            <span class="text-gray-300">Requires convexity</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-card glass rounded-2xl p-8 border-l-4 border-yellow-500" data-animate="fade-up">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="font-display text-2xl font-bold text-yellow-300">Gradient Descent</h3>
+                        <span class="px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-300 text-xs">Local Optima</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Iterative method following the negative gradient</p>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Best for:</span>
+                            <span class="text-gray-300">Deep learning</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Limitation:</span>
+                            <span class="text-gray-300">Gets stuck locally</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-card glass rounded-2xl p-8 border-l-4 border-red-500" data-animate="fade-left">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="font-display text-2xl font-bold text-red-300">Heuristics</h3>
+                        <span class="px-3 py-1 rounded-full bg-red-500/20 text-red-300 text-xs">Approximate</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Genetic algorithms, simulated annealing, swarm intelligence</p>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Best for:</span>
+                            <span class="text-gray-300">NP-hard problems</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Limitation:</span>
+                            <span class="text-gray-300">No guarantee</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass rounded-3xl p-8" data-animate="fade-up">
+                <h3 class="font-display text-2xl font-bold mb-8 text-center">Fundamental Limitations</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="text-center p-4">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/20 flex items-center justify-center text-2xl">🎯</div>
+                        <h4 class="font-bold mb-2">Local Minima</h4>
+                        <p class="text-sm text-gray-400">Converge to nearest optimum</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-orange-500/20 flex items-center justify-center text-2xl">⏱️</div>
+                        <h4 class="font-bold mb-2">Exponential Time</h4>
+                        <p class="text-sm text-gray-400">O(2ⁿ) complexity</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-yellow-500/20 flex items-center justify-center text-2xl">🔄</div>
+                        <h4 class="font-bold mb-2">Sequential</h4>
+                        <p class="text-sm text-gray-400">One solution at a time</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-purple-500/20 flex items-center justify-center text-2xl">🚫</div>
+                        <h4 class="font-bold mb-2">No Tunneling</h4>
+                        <p class="text-sm text-gray-400">Cannot escape barriers</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Quantum Basics -->
+    <section id="sec4" class="relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-animate="fade-up">
+                <span class="text-purple-400 font-medium tracking-wider uppercase text-sm">03. Quantum Foundation</span>
+                <h2 class="font-display text-4xl lg:text-6xl font-bold mt-4 mb-6">From Bits to<br><span class="gradient-text">Qubits</span></h2>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center mb-16">
+                <div class="space-y-6" data-animate="fade-right">
+                    <div class="glass rounded-2xl p-8 border border-gray-700">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center font-bold text-2xl">0/1</div>
+                            <div>
+                                <h3 class="font-display text-xl font-bold text-gray-300">Classical Bit</h3>
+                                <p class="text-sm text-gray-500">Deterministic State</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-400">Either 0 OR 1. Like a light switch—on or off.</p>
+                    </div>
+
+                    <div class="glass rounded-2xl p-8 border border-purple-500/50 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/20 rounded-full blur-3xl"></div>
+                        <div class="flex items-center gap-4 mb-4 relative z-10">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center font-bold text-2xl">|ψ⟩</div>
+                            <div>
+                                <h3 class="font-display text-xl font-bold gradient-text">Quantum Qubit</h3>
+                                <p class="text-sm text-purple-300">Superposition State</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 relative z-10">Both 0 AND 1 simultaneously. Like a spinning coin—heads and tails at once.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6" data-animate="fade-left">
+                    <div class="glass-strong rounded-2xl p-6 flex items-center gap-4">
+                        <div class="text-4xl">⚛️</div>
+                        <div>
+                            <h4 class="font-bold text-lg text-cyan-300">Superposition</h4>
+                            <p class="text-sm text-gray-400">n qubits = 2ⁿ states at once</p>
+                        </div>
+                    </div>
+                    <div class="glass-strong rounded-2xl p-6 flex items-center gap-4">
+                        <div class="text-4xl">🔗</div>
+                        <div>
+                            <h4 class="font-bold text-lg text-purple-300">Entanglement</h4>
+                            <p class="text-sm text-gray-400">Instant correlation between qubits</p>
+                        </div>
+                    </div>
+                    <div class="glass-strong rounded-2xl p-6 flex items-center gap-4">
+                        <div class="text-4xl">⚡</div>
+                        <div>
+                            <h4 class="font-bold text-lg text-pink-300">Quantum Parallelism</h4>
+                            <p class="text-sm text-gray-400">Operate on all states simultaneously</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass rounded-3xl p-8 text-center" data-animate="scale-up">
+                <div class="text-6xl font-display font-bold gradient-text mb-4">50 Qubits</div>
+                <p class="text-xl text-gray-300 mb-4">Can represent 2⁵⁰ ≈ 1 quadrillion states simultaneously</p>
+                <p class="text-gray-500">Classical computers would need 1 PB of RAM just to store these states!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Core Idea -->
+    <section id="sec5" class="relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-animate="fade-up">
+                <span class="text-purple-400 font-medium tracking-wider uppercase text-sm">04. Core Concept</span>
+                <h2 class="font-display text-4xl lg:text-6xl font-bold mt-4 mb-6">Quantum Principles<br><span class="gradient-text">Transform Search</span></h2>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <div class="glass rounded-3xl p-8 border border-red-500/30" data-animate="fade-right">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="px-3 py-1 rounded-full bg-red-500/20 text-red-300 text-sm">Classical</span>
+                        <h3 class="font-display text-2xl font-bold">Sequential Search</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 p-4 rounded-lg bg-red-500/10">
+                            <span class="text-2xl">1️⃣</span>
+                            <span>Evaluate solution #1</span>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 rounded-lg bg-red-500/10">
+                            <span class="text-2xl">2️⃣</span>
+                            <span>Evaluate solution #2</span>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 rounded-lg bg-red-500/10 opacity-50">
+                            <span class="text-2xl">...</span>
+                            <span>Continue sequentially</span>
+                        </div>
+                        <div class="flex items-center gap-4 p-4 rounded-lg bg-red-500/10">
+                            <span class="text-2xl">🐢</span>
+                            <span>Time: O(2ⁿ) — Exponential</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass rounded-3xl p-8 border border-purple-500/30 relative overflow-hidden" data-animate="fade-left">
+                    <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10"></div>
+                    <div class="relative z-10">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-sm">Quantum</span>
+                            <h3 class="font-display text-2xl font-bold gradient-text">Parallel Search</h3>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4 p-4 rounded-lg bg-purple-500/10">
+                                <span class="text-2xl">🌊</span>
+                                <span>Initialize superposition (all states)</span>
+                            </div>
+                            <div class="flex items-center gap-4 p-4 rounded-lg bg-purple-500/10">
+                                <span class="text-2xl">🎯</span>
+                                <span>Apply quantum oracle (mark solutions)</span>
+                            </div>
+                            <div class="flex items-center gap-4 p-4 rounded-lg bg-purple-500/10">
+                                <span class="text-2xl">📈</span>
+                                <span>Amplify good solutions</span>
+                            </div>
+                            <div class="flex items-center gap-4 p-4 rounded-lg bg-purple-500/10">
+                                <span class="text-2xl">⚡</span>
+                                <span>Time: O(√2ⁿ) — Quadratic speedup!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: Algorithms -->
+    <section id="sec6" class="relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-animate="fade-up">
+                <span class="text-purple-400 font-medium tracking-wider uppercase text-sm">05. Key Algorithms</span>
+                <h2 class="font-display text-4xl lg:text-6xl font-bold mt-4 mb-6">Three Pillars of<br><span class="gradient-text">Quantum Optimization</span></h2>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 mb-12">
+                <div class="algo-card rounded-3xl p-8 hover-lift" data-animate="fade-up" data-delay="0.1">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-6 text-3xl">
+                        ❄️
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-4">Quantum Annealing</h3>
+                    <p class="text-gray-400 mb-6">Exploit quantum tunneling to escape local minima and find global optimum</p>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                            <span class="text-gray-300">Start in quantum superposition</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                            <span class="text-gray-300">Gradually reduce fluctuations</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                            <span class="text-gray-300">Settle to ground state</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-white/10">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Best for:</span>
+                            <span class="text-sm text-blue-300">Ising/QUBO problems</span>
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-sm text-gray-500">Hardware:</span>
+                            <span class="text-sm font-bold text-blue-400">D-Wave</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="algo-card rounded-3xl p-8 hover-lift" data-animate="fade-up" data-delay="0.2">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-6 text-3xl">
+                        🎛️
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-4">QAOA</h3>
+                    <p class="text-gray-400 mb-6">Hybrid quantum-classical algorithm for NISQ devices</p>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+                            <span class="text-gray-300">Prepare quantum state</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+                            <span class="text-gray-300">Alternate Hamiltonians</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+                            <span class="text-gray-300">Classical optimization loop</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-white/10">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Best for:</span>
+                            <span class="text-sm text-purple-300">MaxCut, MaxSAT</span>
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-sm text-gray-500">Type:</span>
+                            <span class="text-sm font-bold text-purple-400">Hybrid NISQ</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="algo-card rounded-3xl p-8 hover-lift" data-animate="fade-up" data-delay="0.3">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center mb-6 text-3xl">
+                        🔍
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-4">Grover's Algorithm</h3>
+                    <p class="text-gray-400 mb-6">Quadratic speedup for unstructured search problems</p>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="w-2 h-2 rounded-full bg-orange-400"></span>
+                            <span class="text-gray-300">Initialize uniform superposition</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="w-2 h-2 rounded-full bg-orange-400"></span>
+                            <span class="text-gray-300">Oracle marks targets</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm">
+                            <span class="w-2 h-2 rounded-full bg-orange-400"></span>
+                            <span class="text-gray-300">Amplitude amplification</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-white/10">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-gray-500">Best for:</span>
+                            <span class="text-sm text-orange-300">Database search</span>
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-sm text-gray-500">Speedup:</span>
+                            <span class="text-sm font-bold text-orange-400">√N (Optimal)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 7: Speed Comparison -->
+    <section id="sec7" class="relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-animate="fade-up">
+                <span class="text-purple-400 font-medium tracking-wider uppercase text-sm">06. Performance</span>
+                <h2 class="font-display text-4xl lg:text-6xl font-bold mt-4 mb-6">Classical vs<br><span class="gradient-text">Quantum Speed</span></h2>
+            </div>
+
+            <div class="glass rounded-3xl overflow-hidden mb-12" data-animate="fade-up">
+                <table class="w-full quantum-table">
+                    <thead>
+                        <tr>
+                            <th class="text-purple-300">Aspect</th>
+                            <th class="text-red-300">Classical</th>
+                            <th class="text-green-300">Quantum</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-medium">Search Strategy</td>
+                            <td>Sequential (one by one)</td>
+                            <td class="text-green-300">Parallel (all at once)</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">Time Complexity</td>
+                            <td>O(N) or O(2ⁿ)</td>
+                            <td class="text-green-300">O(√N) or O(poly(n))</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">Local Minima</td>
+                            <td>Gets trapped easily</td>
+                            <td class="text-green-300">Tunneling escapes barriers</td>
+                        </tr>
+                        <tr>
+                            <td class="font-medium">Exploration</td>
+                            <td>Limited by iterations</td>
+                            <td class="text-green-300">Superposition explores all</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8" data-animate="fade-up">
+                <div class="glass rounded-2xl p-6 text-center border-t-4 border-purple-500">
+                    <div class="text-4xl mb-4">⚡</div>
+                    <h4 class="font-bold text-lg mb-2">Quantum Parallelism</h4>
+                    <p class="text-sm text-gray-400">Evaluate 2ⁿ solutions in one operation</p>
+                </div>
+                <div class="glass rounded-2xl p-6 text-center border-t-4 border-cyan-500">
+                    <div class="text-4xl mb-4">🚇</div>
+                    <h4 class="font-bold text-lg mb-2">Quantum Tunneling</h4>
+                    <p class="text-sm text-gray-400">Escape local minima without energy climb</p>
+                </div>
+                <div class="glass rounded-2xl p-6 text-center border-t-4 border-pink-500">
+                    <div class="text-4xl mb-4">📊</div>
+                    <h4 class="font-bold text-lg mb-2">Amplitude Amplification</h4>
+                    <p class="text-sm text-gray-400">Boost probability of good solutions</p>
+                </div>
+            </div>
+
+            <div class="mt-12 glass-strong rounded-3xl p-8 text-center" data-animate="scale-up">
+                <h3 class="font-display text-2xl font-bold mb-4">Traveling Salesman Problem: 25 Cities</h3>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-8 mt-6">
+                    <div class="text-center">
+                        <div class="text-red-400 text-lg font-bold mb-2">Classical</div>
+                        <div class="text-3xl font-bold text-red-300">> Universe Age</div>
+                    </div>
+                    <div class="text-4xl text-purple-400">→</div>
+                    <div class="text-center">
+                        <div class="text-green-400 text-lg font-bold mb-2">Quantum</div>
+                        <div class="text-3xl font-bold text-green-300">Minutes to Hours</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 8: Applications -->
+    <section id="sec8" class="relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-animate="fade-up">
+                <span class="text-purple-400 font-medium tracking-wider uppercase text-sm">07. Applications</span>
+                <h2 class="font-display text-4xl lg:text-6xl font-bold mt-4 mb-6">Real-World<br><span class="gradient-text">Impact</span></h2>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-16">
+                <div class="glass rounded-3xl p-8 hover-lift group" data-animate="fade-right">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">🚚</div>
+                        <span class="px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-sm">20-30% Savings</span>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-3">Supply Chain</h3>
+                    <p class="text-gray-400 mb-4">Vehicle routing, warehouse optimization, inventory management</p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-center gap-2"><span class="text-blue-400">✓</span> Optimize 1000+ delivery routes</li>
+                        <li class="flex items-center gap-2"><span class="text-blue-400">✓</span> Real-time dynamic rerouting</li>
+                        <li class="flex items-center gap-2"><span class="text-blue-400">✓</span> Minimize fuel & time costs</li>
+                    </ul>
+                    <div class="mt-6 pt-6 border-t border-white/10 flex items-center gap-2">
+                        <span class="text-sm text-gray-500">Used by:</span>
+                        <span class="text-sm font-bold text-blue-400">D-Wave Systems</span>
+                    </div>
+                </div>
+
+                <div class="glass rounded-3xl p-8 hover-lift group" data-animate="fade-left">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="w-14 h-14 rounded-2xl bg-green-500/20 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">💹</div>
+                        <span class="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-sm">High Frequency</span>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-3">Finance</h3>
+                    <p class="text-gray-400 mb-4">Portfolio optimization, risk analysis, arbitrage detection</p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Risk-return across 1000s of assets</li>
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Real-time market detection</li>
+                        <li class="flex items-center gap-2"><span class="text-green-400">✓</span> Regulatory constraint satisfaction</li>
+                    </ul>
+                    <div class="mt-6 pt-6 border-t border-white/10 flex items-center gap-2">
+                        <span class="text-sm text-gray-500">Used by:</span>
+                        <span class="text-sm font-bold text-green-400">Goldman Sachs, JPMorgan</span>
+                    </div>
+                </div>
+
+                <div class="glass rounded-3xl p-8 hover-lift group" data-animate="fade-right">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="w-14 h-14 rounded-2xl bg-pink-500/20 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">🧬</div>
+                        <span class="px-3 py-1 rounded-full bg-pink-500/20 text-pink-300 text-sm">Accelerated</span>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-3">Drug Discovery</h3>
+                    <p class="text-gray-400 mb-4">Molecular configuration, protein folding, drug interaction</p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-center gap-2"><span class="text-pink-400">✓</span> Simulate molecular quantum states</li>
+                        <li class="flex items-center gap-2"><span class="text-pink-400">✓</span> Find stable protein conformations</li>
+                        <li class="flex items-center gap-2"><span class="text-pink-400">✓</span> Accelerate drug screening</li>
+                    </ul>
+                    <div class="mt-6 pt-6 border-t border-white/10 flex items-center gap-2">
+                        <span class="text-sm text-gray-500">Used by:</span>
+                        <span class="text-sm font-bold text-pink-400">Roche, Biogen</span>
+                    </div>
+                </div>
+
+                <div class="glass rounded-3xl p-8 hover-lift group" data-animate="fade-left">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="w-14 h-14 rounded-2xl bg-orange-500/20 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">🤖</div>
+                        <span class="px-3 py-1 rounded-full bg-orange-500/20 text-orange-300 text-sm">Optimized</span>
+                    </div>
+                    <h3 class="font-display text-2xl font-bold mb-3">Machine Learning</h3>
+                    <p class="text-gray-400 mb-4">Training optimization, feature selection, hyperparameter tuning</p>
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        <li class="flex items-center gap-2"><span class="text-orange-400">✓</span> Faster convergence in training</li>
+                        <li class="flex items-center gap-2"><span class="text-orange-400">✓</span> Quantum kernel methods</li>
+                        <li class="flex items-center gap-2"><span class="text-orange-400">✓</span> Optimal feature subset selection</li>
+                    </ul>
+                    <div class="mt-6 pt-6 border-t border-white/10 flex items-center gap-2">
+                        <span class="text-sm text-gray-500">Used by:</span>
+                        <span class="text-sm font-bold text-orange-400">Google, IBM</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            <div class="relative" data-animate="fade-up">
+                <h3 class="font-display text-2xl font-bold text-center mb-12">Industry Adoption Timeline</h3>
+                <div class="relative">
+                    <div class="timeline-line hidden md:block"></div>
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="glass rounded-2xl p-6 text-center relative">
+                            <div class="w-4 h-4 rounded-full bg-purple-500 mx-auto mb-4 md:absolute md:left-1/2 md:-top-2 md:transform md:-translate-x-1/2"></div>
+                            <div class="text-purple-400 font-bold mb-2">Now</div>
+                            <p class="text-sm text-gray-400">Proof of concepts, small-scale pilots</p>
+                        </div>
+                        <div class="glass rounded-2xl p-6 text-center relative">
+                            <div class="w-4 h-4 rounded-full bg-cyan-500 mx-auto mb-4 md:absolute md:left-1/2 md:-top-2 md:transform md:-translate-x-1/2"></div>
+                            <div class="text-cyan-400 font-bold mb-2">2027-2030</div>
+                            <p class="text-sm text-gray-400">Hybrid solutions, niche applications</p>
+                        </div>
+                        <div class="glass rounded-2xl p-6 text-center relative">
+                            <div class="w-4 h-4 rounded-full bg-pink-500 mx-auto mb-4 md:absolute md:left-1/2 md:-top-2 md:transform md:-translate-x-1/2"></div>
+                            <div class="text-pink-400 font-bold mb-2">2030+</div>
+                            <p class="text-sm text-gray-400">Widespread commercial deployment</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 9: Challenges -->
+    <section id="sec9" class="relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-animate="fade-up">
+                <span class="text-purple-400 font-medium tracking-wider uppercase text-sm">08. Challenges</span>
+                <h2 class="font-display text-4xl lg:text-6xl font-bold mt-4 mb-6">Roadblocks to<br><span class="gradient-text">Quantum Supremacy</span></h2>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 mb-12">
+                <div class="glass rounded-3xl p-8 border border-red-500/30" data-animate="fade-up" data-delay="0.1">
+                    <div class="w-16 h-16 rounded-2xl bg-red-500/20 flex items-center justify-center mb-6 text-3xl">📡</div>
+                    <h3 class="font-display text-xl font-bold mb-4 text-red-300">Noise & Decoherence</h3>
+                    <p class="text-gray-400 mb-4">Qubits lose quantum properties due to environmental interference</p>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Gate errors:</span>
+                            <span class="text-red-300">0.1-1% per operation</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Coherence:</span>
+                            <span class="text-red-300">Microseconds</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass rounded-3xl p-8 border border-yellow-500/30" data-animate="fade-up" data-delay="0.2">
+                    <div class="w-16 h-16 rounded-2xl bg-yellow-500/20 flex items-center justify-center mb-6 text-3xl">🔧</div>
+                    <h3 class="font-display text-xl font-bold mb-4 text-yellow-300">Hardware Limits</h3>
+                    <p class="text-gray-400 mb-4">Limited qubit count and connectivity constraints</p>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Current:</span>
+                            <span class="text-yellow-300">100-1000 qubits</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Needed:</span>
+                            <span class="text-yellow-300">Millions (logical)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass rounded-3xl p-8 border border-orange-500/30" data-animate="fade-up" data-delay="0.3">
+                    <div class="w-16 h-16 rounded-2xl bg-orange-500/20 flex items-center justify-center mb-6 text-3xl">📈</div>
+                    <h3 class="font-display text-xl font-bold mb-4 text-orange-300">Scalability</h3>
+                    <p class="text-gray-400 mb-4">Mapping real problems to quantum hardware</p>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Connectivity:</span>
+                            <span class="text-orange-300">Limited</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Encoding:</span>
+                            <span class="text-orange-300">Overhead heavy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-strong rounded-3xl p-8" data-animate="fade-up">
+                <h3 class="font-display text-2xl font-bold mb-8 text-center">Mitigation Strategies</h3>
+                <div class="grid md:grid-cols-4 gap-6">
+                    <div class="text-center p-4">
+                        <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-purple-500/20 flex items-center justify-center text-2xl">🛡️</div>
+                        <h4 class="font-bold mb-2 text-purple-300">Error Correction</h4>
+                        <p class="text-xs text-gray-400">Surface codes, logical qubits</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-cyan-500/20 flex items-center justify-center text-2xl">🔗</div>
+                        <h4 class="font-bold mb-2 text-cyan-300">Hybrid Algorithms</h4>
+                        <p class="text-xs text-gray-400">Quantum + classical</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-pink-500/20 flex items-center justify-center text-2xl">❄️</div>
+                        <h4 class="font-bold mb-2 text-pink-300">Better Hardware</h4>
+                        <p class="text-xs text-gray-400">Cryogenic systems</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center text-2xl">⚙️</div>
+                        <h4 class="font-bold mb-2 text-green-300">Compilers</h4>
+                        <p class="text-xs text-gray-400">Optimized circuit mapping</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 glass rounded-2xl p-6 border-l-4 border-purple-500" data-animate="fade-up">
+                <p class="text-center text-gray-300">
+                    <span class="font-bold text-purple-300">Reality Check:</span> Current quantum computers are in the NISQ (Noisy Intermediate-Scale Quantum) era. We're still 5-10 years away from fault-tolerant quantum computers that can solve commercially relevant optimization problems at scale.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 10: Future -->
+    <section id="sec10" class="relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-animate="fade-up">
+                <span class="text-purple-400 font-medium tracking-wider uppercase text-sm">09. Future</span>
+                <h2 class="font-display text-4xl lg:text-6xl font-bold mt-4 mb-6">Research Directions &<br><span class="gradient-text">Road Ahead</span></h2>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 mb-16">
+                <div class="space-y-6" data-animate="fade-right">
+                    <div class="glass rounded-2xl p-6 border-l-4 border-purple-500">
+                        <h3 class="font-display text-xl font-bold mb-3 text-purple-300">Hybrid Quantum-Classical</h3>
+                        <p class="text-gray-400 mb-3">The Best of Both Worlds</p>
+                        <ul class="space-y-2 text-sm text-gray-300">
+                            <li>• QAOA: Quantum circuit + classical optimizer</li>
+                            <li>• VQE: Quantum eigensolver + classical loop</li>
+                            <li>• Warm-start: Classical init → quantum refine</li>
+                        </ul>
+                    </div>
+                    <div class="glass rounded-2xl p-6 border-l-4 border-cyan-500">
+                        <h3 class="font-display text-xl font-bold mb-3 text-cyan-300">Industry Adoption</h3>
+                        <p class="text-gray-400 mb-3">Major Players Investing Billions</p>
+                        <div class="grid grid-cols-2 gap-2 text-sm">
+                            <div class="text-gray-300">• IBM Quantum Network</div>
+                            <div class="text-gray-300">• Google Quantum AI</div>
+                            <div class="text-gray-300">• Amazon Braket</div>
+                            <div class="text-gray-300">• D-Wave Systems</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4" data-animate="fade-left">
+                    <div class="glass rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">🔬</div>
+                        <h4 class="font-bold text-sm mb-1">Hardware</h4>
+                        <p class="text-xs text-gray-400">Better qubits, error correction</p>
+                    </div>
+                    <div class="glass rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">📐</div>
+                        <h4 class="font-bold text-sm mb-1">Algorithms</h4>
+                        <p class="text-xs text-gray-400">Problem-specific optimizers</p>
+                    </div>
+                    <div class="glass rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">💻</div>
+                        <h4 class="font-bold text-sm mb-1">Software</h4>
+                        <p class="text-xs text-gray-400">High-level quantum languages</p>
+                    </div>
+                    <div class="glass rounded-xl p-4 text-center">
+                        <div class="text-3xl mb-2">🎯</div>
+                        <h4 class="font-bold text-sm mb-1">Applications</h4>
+                        <p class="text-xs text-gray-400">QML, materials, security</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-strong rounded-3xl p-8" data-animate="scale-up">
+                <h3 class="font-display text-2xl font-bold text-center mb-8">Roadmap to Fault Tolerance</h3>
+                <div class="relative">
+                    <div class="absolute left-0 right-0 top-1/2 h-1 bg-gradient-to-r from-purple-500 via-cyan-500 to-pink-500 transform -translate-y-1/2 hidden md:block"></div>
+                    <div class="grid md:grid-cols-3 gap-8 relative">
+                        <div class="glass rounded-2xl p-6 text-center relative z-10">
+                            <div class="w-12 h-12 rounded-full bg-purple-500 mx-auto mb-4 flex items-center justify-center font-bold">1</div>
+                            <div class="text-purple-300 font-bold mb-2">2024-2027</div>
+                            <p class="text-sm text-gray-400">NISQ era, hybrid algorithms</p>
+                        </div>
+                        <div class="glass rounded-2xl p-6 text-center relative z-10">
+                            <div class="w-12 h-12 rounded-full bg-cyan-500 mx-auto mb-4 flex items-center justify-center font-bold">2</div>
+                            <div class="text-cyan-300 font-bold mb-2">2027-2032</div>
+                            <p class="text-sm text-gray-400">Early fault-tolerant systems</p>
+                        </div>
+                        <div class="glass rounded-2xl p-6 text-center relative z-10">
+                            <div class="w-12 h-12 rounded-full bg-pink-500 mx-auto mb-4 flex items-center justify-center font-bold">3</div>
+                            <div class="text-pink-300 font-bold mb-2">2032+</div>
+                            <p class="text-sm text-gray-400">Full-scale quantum advantage</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 11: Conclusion -->
+    <section id="sec11" class="relative">
+        <div class="container mx-auto px-6 text-center">
+            <div data-animate="fade-up">
+                <span class="text-purple-400 font-medium tracking-wider uppercase text-sm">Conclusion</span>
+                <h2 class="font-display text-4xl lg:text-6xl font-bold mt-4 mb-12">The Quantum<br><span class="gradient-text">Revolution</span></h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-16 max-w-5xl mx-auto">
+                <div class="glass rounded-2xl p-8" data-animate="fade-up" data-delay="0.1">
+                    <div class="w-16 h-16 rounded-full bg-purple-500/20 flex items-center justify-center mx-auto mb-6 text-3xl">⚛️</div>
+                    <p class="text-gray-300">Leverages superposition, entanglement, and tunneling for intractable problems</p>
+                </div>
+                <div class="glass rounded-2xl p-8" data-animate="fade-up" data-delay="0.2">
+                    <div class="w-16 h-16 rounded-full bg-cyan-500/20 flex items-center justify-center mx-auto mb-6 text-3xl">⚡</div>
+                    <p class="text-gray-300">Quadratic to exponential speedups for combinatorial optimization</p>
+                </div>
+                <div class="glass rounded-2xl p-8" data-animate="fade-up" data-delay="0.3">
+                    <div class="w-16 h-16 rounded-full bg-pink-500/20 flex items-center justify-center mx-auto mb-6 text-3xl">🌍</div>
+                    <p class="text-gray-300">Real-world applications in finance, logistics, drug discovery, ML</p>
+                </div>
+            </div>
+
+            <div class="glass-strong rounded-3xl p-8 lg:p-12 max-w-4xl mx-auto mb-16" data-animate="scale-up">
+                <blockquote class="text-2xl lg:text-3xl font-display font-medium italic text-gray-300 leading-relaxed">
+                    "Quantum optimization is not just faster computing—it's a <span class="gradient-text">fundamental shift</span> in how we approach problem-solving, enabling us to explore solution spaces that were previously <span class="text-cyan-300">beyond reach</span>."
+                </blockquote>
+            </div>
+
+            <div class="space-y-4" data-animate="fade-up">
+                <h3 class="font-display text-3xl font-bold mb-8">Thank You</h3>
+                <p class="text-gray-400 mb-8">Questions & Discussion</p>
+                <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="glow-btn px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold hover:scale-105 transition-transform">
+                    Back to Top ↑
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Generate particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Generate navigation dots
+        const sections = document.querySelectorAll('section');
+        const navDotsContainer = document.getElementById('navDots');
+        sections.forEach((section, index) => {
+            const dot = document.createElement('div');
+            dot.className = 'nav-dot';
+            dot.onclick = () => section.scrollIntoView({ behavior: 'smooth' });
+            navDotsContainer.appendChild(dot);
+        });
+
+        // Progress bar and scroll spy
+        const progressBar = document.getElementById('progressBar');
+        const dots = document.querySelectorAll('.nav-dot');
+
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrolled / maxScroll) * 100;
+            progressBar.style.width = progress + '%';
+
+            // Update active dot
+            sections.forEach((section, index) => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+                    dots.forEach(d => d.classList.remove('active'));
+                    dots[index].classList.add('active');
+                }
+            });
+        });
+
+        // GSAP Animations
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Animate elements on scroll
+        document.querySelectorAll('[data-animate]').forEach(el => {
+            const animation = el.dataset.animate;
+            const delay = el.dataset.delay || 0;
+            
+            let fromVars = { opacity: 0 };
+            
+            switch(animation) {
+                case 'fade-up':
+                    fromVars.y = 50;
+                    break;
+                case 'fade-down':
+                    fromVars.y = -50;
+                    break;
+                case 'fade-left':
+                    fromVars.x = -50;
+                    break;
+                case 'fade-right':
+                    fromVars.x = 50;
+                    break;
+                case 'scale-up':
+                    fromVars.scale = 0.8;
+                    break;
+            }
+
+            gsap.fromTo(el, fromVars, {
+                opacity: 1,
+                y: 0,
+                x: 0,
+                scale: 1,
+                duration: 0.8,
+                delay: parseFloat(delay),
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: el,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                }
+            });
+        });
+
+        // Parallax effect for background
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            document.querySelector('.quantum-bg').style.transform = `translateY(${scrolled * 0.5}px)`;
+        });
+    </script>
+</body>
+</html>
