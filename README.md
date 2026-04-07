@@ -1,4 +1,4 @@
-# ⚛️ Quantum Optimization — Interactive Web Presentation
+# Quantum Optimization — Interactive Web Presentation
 
 An advanced, visually immersive web-based presentation explaining how quantum computing is revolutionizing optimization problems.
 
